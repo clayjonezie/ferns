@@ -1,12 +1,12 @@
 from PIL import Image, ImageDraw
 import random
 
-size = (3000,3000)
+size = (300,300)
 im = Image.new('RGB', size)
 draw = ImageDraw.Draw(im)
 x, y = random.random(), random.random()
 
-for i in xrange(5000000):
+for i in xrange(500000):
   rand = random.random()
   if rand < 0.01:
     x, y = 0.0, 0.16 * y;
@@ -23,9 +23,9 @@ for i in xrange(5000000):
     newy = (0.26 * x) + (0.24 * y) + 0.44
     x, y = newx, newy
 
-draw.point(
-  (size[0]/2.0  + x*size[0]/10.0, y*size[1]/12.0),
-  fill='#0f0')	
+  draw.point(
+    (size[0]/2.0  + x*size[0]/10.0, y*size[1]/12.0),
+    fill='#0f0')	
 
 im.save("out_fern.png", "PNG")
 

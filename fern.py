@@ -3,8 +3,9 @@ import random
 from os import system
 import sys
 
-dim = 1000
-iters = 500000
+dim = 2 * 640
+iters = 1500000
+imgsize = (2 * 640, 2 * 1136)
 size = (dim, dim)
 
 frames = 50
@@ -18,9 +19,8 @@ ps = [[1.0 - .98 * delta * x,
 def output_fern(i, p):
   print p
   x, y = random.random(), random.random()
-  color = (0, 255, 0)
 
-  image = Image.new('RGB', size)
+  image = Image.new('RGB', imgsize)
   draw = ImageDraw.Draw(image)
   for q in xrange(iters): 
     p1 = p[0]
@@ -43,12 +43,22 @@ def output_fern(i, p):
       x, y = newx, newy
   
     draw.point(
-      (size[0]/2.0  + x*size[0]/10.0, y*size[1]/12.0), fill=color)
+      (size[0]/2.0  + x*size[0]/10.0, y*size[1]/12.0), fill=(0, 255, 0))
+    draw.point(
+      (size[0]/2.0  - x*size[0]/10.0, y*size[1]/12.0), fill=(0, 0, 255))
+    draw.point(
+      (size[0]/2.0  + x*size[0]/10.0 + 100, y*size[1]/12.0), fill=(255, 0, 0))
+    draw.point(
+      (size[0]/2.0  - x*size[0]/10.0 - 100, y*size[1]/12.0), fill=(255, 0, 255))
+
   image.save("out_fern%06d.png" % i, "PNG")
   print "out_fern%06d.png" % i
 
-for i, p in enumerate(ps):
-  output_fern(i, p)
-system("convert *.png -delay 1 -loop 0 anim.gif")
-system("convert anim.gif -reverse animr.gif")
-system("convert *.gif -delay 1 -loop 0 out.gif")
+#for i, p in enumerate(ps):
+#  output_fern(i, p)
+
+output_fern(444, [.01, .85, .07, .07])
+system("convert out_fern000444.png -resize 600x600 compressed.png")
+#system("convert *.png -delay 1 -loop 0 anim.gif")
+#system("convert anim.gif -reverse animr.gif")
+#system("convert *.gif -delay 1 -loop 0 out.gif")
